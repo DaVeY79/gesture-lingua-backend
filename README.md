@@ -1,2 +1,2 @@
-# finger-lingua-backend
+# gesture-lingua-backend
 Sign-language recognition project
