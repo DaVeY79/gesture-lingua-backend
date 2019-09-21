@@ -49,6 +49,13 @@ def path_to_tensor(img_path, size):
     # convert 3D tensor to 4D tensor
     return np.expand_dims(x, axis=0)
 
+def path_to_tensor_new(img, size):
+    # loads RGB image as PIL.Image.Image type
+    # convert PIL.Image.Image type to 3D tensor
+    x = image.img_to_array(img)
+    # convert 3D tensor to 4D tensor
+    return np.expand_dims(x, axis=0)
+
 def paths_to_tensor(img_paths, size=50):
     list_of_tensors = [path_to_tensor(img_path, size) for img_path in img_paths]
     return np.vstack(list_of_tensors)
