@@ -20,26 +20,17 @@
       <label for="file">Choose an Image</label>
 
       <button type=""class="button" style = "margin-left:140px;align:center; ">Click an Image</button>
-      <input type="submit" id="submit"value="Predict the Alphabet" style = "margin-left:120px;align:center; "/>
+      <input type="submit" id="submit"value="Predict the Alphabet" style = "margin-left:120px;align:center; " onclick="validate()"/>
   </form>
     <br>
     <br>
     <div class="boxed">
     <img id="gesture" width=400 height= 400 src="#" alt="Your hand Gesture Image" />
     </div>
-<div class="transbox2" id="letterResult"></div>
+<div class="boxed2" id="letterResult">
+    View Gesture Prediction Here:<br>
+  <p hidden id="result">{{name}}</p>
+    </div>
   </body>
-  <script>
-  $(document).ready(function() {
-    $('#submit').Click(function(){
-      $ajax({
-        url: "/predict",
-        type: "post",
-        success: function(response) {
-          $("#letterResult").html(response.html);
-        },
-      });
-    });
-  });
-  </script>
+ 
 </html>
