@@ -3,19 +3,18 @@ np.random.seed(5)
 import tensorflow as tf
 tf.set_random_seed(2)
 from keras.models import load_model
-from datasets.sign_language import path_to_tensor, path_to_tensor_new
+from datasets.sign_language import path_to_tensor
 import logging
 import random
 from os.path import join
-from flask import Flask, jsonify,request, render_template
-from werkzeug.datastructures import FileStorage
+from flask import Flask, jsonify, request, render_template
 app = Flask(__name__)
 
 ### Enabling logger
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-@app.route("/")
+@app.route("/", methods = ["GET"])
 def upload_page():
     return render_template("linguahome.html")
 

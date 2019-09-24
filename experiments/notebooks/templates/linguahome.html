@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="transbox">
-      <h1 style="font-size:60px" >Deep-Gesture Lingua</h1>
+      <h1 style="font-size:60px" >Deep Gesture-Lingua</h1>
     </div>
     <form id="image-input" action="/predict" method="post" enctype="multipart/form-data">
       <input type="file" id="file" name='file' style = "margin-left:280px; align:center;" onchange="readURL(this)"/>
@@ -25,11 +25,10 @@
     <br>
     <br>
     <div class="boxed">
-    <img id="gesture" width=400 height= 400 src="#" alt="Your hand Gesture Image" />
+    <img id="gesture" width=300 height= 300 src="#" alt="Your hand Gesture Image" />
     </div>
 <div class="transbox2" id="letterResult"></div>
-  </body>
-  <script>
+  <!-- <script>
   $(document).ready(function() {
     $('#submit').Click(function(){
       $ajax({
@@ -41,5 +40,6 @@
       });
     });
   });
-  </script>
+  </script> -->
+  </body>
 </html>
