@@ -41,8 +41,8 @@ def predict():
     y_probs = model.predict(X)
     y_preds = np.argmax(y_probs,axis = 1)
 
-    return jsonify({'alphabet' : image_labels[y_preds[0]]})
-    #return render_template("linguahome.html",alphabet = image_labels[y_preds[0]])
-    #return render_template("success.html",alphabet = file)
+    # return jsonify({'alphabet' : image_labels[y_preds[0]]})
+    return render_template("linguahome.html",name = image_labels[y_preds[0]])
+    # return render_template("success.html",alphabet = file)
 
 app.run(port = 5000)

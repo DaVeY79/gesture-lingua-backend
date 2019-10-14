@@ -3,8 +3,7 @@ import numpy as np
 from keras.utils import np_utils, to_categorical
 from keras.preprocessing import image
 from os import listdir
-from os.path import isdir, join
-
+from os.path import join
 
 def load_data(container_path='datasets', folders=['A', 'B', 'C'],
               size=2000, test_split=0.2, seed=0):
@@ -26,7 +25,6 @@ def load_data(container_path='datasets', folders=['A', 'B', 'C'],
     random.shuffle(data)
     data = data[:size]
     filenames, labels = zip(*data)
-
 
     # Get the images
     x = paths_to_tensor(filenames).astype('float32')/255

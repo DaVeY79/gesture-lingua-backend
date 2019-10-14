@@ -13,3 +13,9 @@ function readURL(input) {
             reader.readAsDataURL(input.files[0]);
         }
     }
+function validate(){
+  if(document.getElementById("file").files.length == 0){
+    alert("Please select an image for prediction!");
+    return;
+  }
+}
