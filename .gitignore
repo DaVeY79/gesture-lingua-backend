@@ -8,6 +8,8 @@ __pycache__/
 
 #Image files
 *.jpg
+*.h5
+*.pth
 
 #Other extensions
 *.DS_store

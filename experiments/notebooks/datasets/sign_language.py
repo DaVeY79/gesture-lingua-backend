@@ -6,7 +6,7 @@ from os import listdir
 from os.path import join
 
 def load_data(container_path='datasets', folders=['A', 'B', 'C'],
-              size=2000, test_split=0.2, seed=0):
+              size=2000, test_split=0.2, seed=0): #list(map(chr, range(ord('A'), ord('Z')+1)))+['del','space','nothing']
     """
     Loads sign language dataset.
     """

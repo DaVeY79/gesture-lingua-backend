@@ -5,7 +5,7 @@ tf.set_random_seed(2)
 from keras.models import load_model
 from datasets.sign_language import path_to_tensor
 import logging
-import random
+#import random
 from os.path import join
 from flask import Flask, jsonify, request, render_template
 app = Flask(__name__)
