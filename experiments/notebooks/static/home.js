@@ -7,7 +7,7 @@ function readURL(input) {
                 $('#gesture')
                     .attr('src', e.target.result)
                     .width(300)
-                    .height(300);
+                    .height(200);
             };
 
             reader.readAsDataURL(input.files[0]);
