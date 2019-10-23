@@ -1,11 +1,10 @@
+from fastai.vision import *
 import numpy as np
 np.random.seed(5)
-import tensorflow as tf
-tf.set_random_seed(2)
-from keras.models import load_model
-from datasets.sign_language import path_to_tensor
+import torch
+import pickle
+from pathlib import Path
 import logging
-#import random
 from os.path import join
 from flask import Flask, jsonify, request, render_template
 app = Flask(__name__)
@@ -21,8 +20,14 @@ def upload_page():
 @app.route('/predict',methods = ['GET','POST'])
 def predict():
     if request.form["submit_button"] == "Predict the Alphabet":
-        image_labels = ['A','B','C']
+
+        path = Path("/Users/davidabraham/gesture-lingua-backend/experiments/notebooks")
+
+        with open(path/"class_names.pkl","rb") as pkl_file:
+            classes = pickle.load(pkl_file)
+
         image_path = join('uploaded_images','image.jpg')
+
         # create a file handler
         handler = logging.FileHandler('Log_Model_Builder.log')
         handler.setLevel(logging.DEBUG)
@@ -36,15 +41,15 @@ def predict():
 
         file = request.files['file']
         file.save(image_path)
-        model = load_model('model.h5')
-        X = path_to_tensor(image_path,50)
 
-        y_probs = model.predict(X)
-        y_preds = np.argmax(y_probs,axis = 1)
+        data2 = ImageDataBunch.single_from_classes(path,classes,ds_tfms= get_transforms(),size = 224).normalize(imagenet_stats)
+        learn = cnn_learner(data2,models.resnet34)
+        learn.load('model-after-unfreeze')
 
-        # return jsonify({'alphabet' : image_labels[y_preds[0]]})
-        return render_template("linguahome.html",name = image_labels[y_preds[0]])
-        # return render_template("success.html",alphabet = file)
+        img = open_image(Path(image_path))
+        label,index, pred = learn.predict(img)
+
+        return render_template("linguavideo.html",name = label,image = image_path)
 
     elif request.form["submit_button"] == "Capture Video":
         return render_template("success.html")
