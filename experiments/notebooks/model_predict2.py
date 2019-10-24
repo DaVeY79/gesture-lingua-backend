@@ -1,4 +1,4 @@
-from fastai.vision import *
+from fastai.vision import ImageDataBunch, get_transforms, cnn_learner, normalize, imagenet_stats, open_image, models
 import numpy as np
 np.random.seed(5)
 import torch
@@ -40,13 +40,13 @@ def predict():
         logger.addHandler(handler)
 
         file = request.files['file']
-        file.save(image_path)
+        file.save(str(path/image_path))
 
         data2 = ImageDataBunch.single_from_classes(path,classes,ds_tfms= get_transforms(),size = 224).normalize(imagenet_stats)
         learn = cnn_learner(data2,models.resnet34)
         learn.load('model-after-unfreeze')
 
-        img = open_image(Path(image_path))
+        img = open_image(path/image_path)
         label,index, pred = learn.predict(img)
 
         return render_template("linguavideo.html",name = label,image = image_path)
