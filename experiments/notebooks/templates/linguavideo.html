@@ -1,44 +1,137 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-      <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-      <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/3.1.0/jquery-ui.min.js"></script>
-      <meta charset=utf-8 />
-      <meta charset="ISO-8859-1">
-      <title>Deep Gesture Lingua</title>
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
-      <link rel="shortcut icon" href="#" type="image/x-icon">
-       <script type="text/javascript" src="{{ url_for('static', filename = 'home.js')}}"></script>
-  </head>
-  <body>
-    <div class="transbox">
-      <h1 style="font-size:60px" >Deep Gesture Lingua</h1>
-    </div>
-    <form id="image-input" action="/predict" method="post" enctype="multipart/form-data">
-      <input type="file" id="file" name='file' style = "margin-left:280px; align:center;" onchange="readURL(this)"/>
-      <label for="file">Choose an Image</label>
 
-      <button type=""class="button" style = "margin-left:80px;align:center; ">Click an Image</button>
-      <input type="submit" id="submit" name = "submit_button" value="Capture Video" style = "margin-left:120px;align:center; "/>
-  <!-- </form> -->
-    <br>
-    <br>
-    <div class="boxed">
-    <img id="gesture" width=300 height= 300 src="#" alt="Your hand Gesture Image" />
-    <!-- <input type="submit" id="submit" value="Predict the Alphabet" style="margin-left:20px;margin-top:90px"> -->
-    </div>
-    <br>
-    <br>
-    <!-- <form id="image-input" action="/predict" method="post" enctype="multipart/form-data"> -->
-    <input type="submit" id="submit" name = "submit_button" value="Predict the Alphabet" style="margin-left:550px;margin-top:200px">
-    </form>
+<head>
+  <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/3.1.0/jquery-ui.min.js"></script>
+  <meta charset=utf-8 />
+  <meta charset="ISO-8859-1">
+  <title>Deep Gesture Lingua</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+  <!-- <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script> -->
+</head>
+
+<body>
+  <div class="transbox">
+    <h1 style="font-size:60px">Deep Gesture Lingua</h1>
+  </div>
 
 
-<div class="boxed2">
-    View Gesture Prediction here:<br>
-    <p id="result">{{name}}</br></p>
-</div>
+  <!-- <div class="boxed3">
+      <video autoplay="true" id="videoElement">
 
-  </body>
+      </video>
+    </div> -->
+
+  <!-- beginning of nonsense -->
+
+  <!-- <div class="mb10">
+    <button onclick="toggleVideo()" id="trackbutton" class="bx--btn bx--btn--secondary" type="button">
+      Toggle Video
+    </button>
+    <div id="updatenote" class="updatenote mt10"> loading model ..</div>
+  </div>
+  <video class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
+
+  <canvas id="canvas" class="border canvasbox"></canvas>
+
+  <script src="https://unpkg.com/carbon-components@latest/scripts/carbon-components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script>
+  <script>
+    const video = document.getElementById("myvideo");
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    let trackButton = document.getElementById("trackbutton");
+    let updateNote = document.getElementById("updatenote");
+
+    let isVideo = false;
+    let model = null;
+
+    const modelParams = {
+      flipHorizontal: true, // flip e.g for video
+      maxNumBoxes: 20, // maximum number of boxes to detect
+      iouThreshold: 0.5, // ioU threshold for non-max suppression
+      scoreThreshold: 0.6, // confidence threshold for predictions.
+    }
+
+    function startVideo() {
+      handTrack.startVideo(video).then(function(status) {
+        console.log("video started", status);
+        if (status) {
+          updateNote.innerText = "Video started. Now tracking"
+          isVideo = true
+          runDetection()
+        } else {
+          updateNote.innerText = "Please enable video"
+        }
+      });
+    }
+
+    function toggleVideo() {
+      if (!isVideo) {
+        updateNote.innerText = "Starting video"
+        startVideo();
+      } else {
+        updateNote.innerText = "Stopping video"
+        handTrack.stopVideo(video)
+        isVideo = false;
+        updateNote.innerText = "Video stopped"
+      }
+    }
+
+
+
+    function runDetection() {
+      model.detect(video).then(predictions => {
+        console.log("Predictions: ", predictions);
+        model.renderPredictions(predictions, canvas, context, video);
+        if (isVideo) {
+          requestAnimationFrame(runDetection);
+        }
+      });
+    }
+
+    // Load the model.
+    handTrack.load(modelParams).then(lmodel => {
+      // detect objects in the image.
+      model = lmodel
+      updateNote.innerText = "Loaded Model!"
+      trackButton.disabled = false
+    });
+  </script> -->
+
+  <!-- end of nonsense -->
+
+  <script>
+    var video = document.querySelector("#myvideo");
+
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({
+          video: true
+        })
+        .then(function(stream) {
+          video.srcObject = stream;
+        })
+        .catch(function(err0r) {
+          console.log("Something went wrong!");
+        });
+    }
+
+    function stop(e) {
+      var stream = video.srcObject;
+      var tracks = stream.getTracks();
+
+      for (var i = 0; i < tracks.length; i++) {
+        var track = tracks[i];
+        track.stop();
+      }
+
+      video.srcObject = null;
+    }
+  </script>
+
+</body>
+
 </html>

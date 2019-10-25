@@ -1,13 +1,13 @@
-
 body {
-    background-color: #fffff9;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment:fixed;
+  background-color: #fffff9;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
+
 .header {
-       text-align: center;
-       position:fixed;
+  text-align: center;
+  position: fixed;
 }
 
 div.transbox {
@@ -15,9 +15,9 @@ div.transbox {
   background-color: #003366;
   border: ;
   opacity: 0.9;
-  filter: alpha(opacity=60); /* For IE8 and earlier */
-  line-height:1.2;
-
+  filter: alpha(opacity=60);
+  /* For IE8 and earlier */
+  line-height: 1.2;
 }
 
 div.transbox2 {
@@ -25,26 +25,28 @@ div.transbox2 {
   background-color: #003366;
   border: ;
   opacity: 0.9;
-  filter: alpha(opacity=60); /* For IE8 and earlier */
-  line-height:1.2;
+  filter: alpha(opacity=60);
+  /* For IE8 and earlier */
+  line-height: 1.2;
   font-size: 30px;
   font-family: sans-serif;
-
 }
+
 div.transbox h1 {
   margin: 1%;
   font-weight: bold;
   color: #ffffff;
-  letter-spacing:7px;
+  letter-spacing: 7px;
   text-align: center;
 }
+
 [type="file"] {
   height: 0;
   overflow: hidden;
   width: 0;
 }
 
-.button,[type="file"] + label,[type="submit"] {
+.button, [type="file"]+label, [type="submit"] {
   position: relative;
   background-color: #003365;
   border: none;
@@ -62,29 +64,92 @@ div.transbox h1 {
   cursor: pointer;
 }
 
-.boxed{
-    margin-left: 500px;
-    position:absolute;
-    width: 300px;
-    height: 200px;
-    border: 3px solid #003365;
-    padding:4 px;
-     background-color: #ffffff;
-    font-size:20px;
-    color: black;
-    text-align: center;
+.boxed {
+  margin-left: 500px;
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  border: 3px solid #003365;
+  padding: 4 px;
+  background-color: #ffffff;
+  font-size: 20px;
+  color: black;
+  text-align: center;
 }
 
-.boxed2{
-    margin-left: 500px;
-    margin-top: 30px;
-    position:absolute;
-    width: 300px;
-    height: 100px;
-    border: 3px solid #003365;
-    padding:4 px;
-     background-color: #ffffff;
-    font-size:20px;
-    color: black;
-    text-align: center;
+.boxed2 {
+  margin-left: 500px;
+  margin-top: 30px;
+  position: absolute;
+  width: 300px;
+  height: 100px;
+  border: 3px solid #003365;
+  padding: 4 px;
+  background-color: #ffffff;
+  font-size: 20px;
+  color: black;
+  text-align: center;
+}
+
+.boxed3 {
+  margin-left: 300px;
+  margin-top: 30px;
+  position: absolute;
+  width: 650px;
+  height: 480px;
+  border: 3px solid #003365;
+  padding: 4 px;
+  background-color: #ffffff;
+  font-size: 20px;
+  color: black;
+  text-align: center;
+}
+
+
+#video {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px black;
+  width: 320px;
+  height: 240px;
+}
+
+#photo {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px black;
+  width: 320px;
+  height: 240px;
+}
+
+#canvas {
+  display: none;
+}
+
+.camera {
+  width: 340px;
+  display: inline-block;
+}
+
+.output {
+  width: 340px;
+  display: inline-block;
+}
+
+#startbutton {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 32px;
+  background-color: rgba(0, 150, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  color: rgba(255, 255, 255, 1.0);
+}
+
+.contentarea {
+  font-size: 16px;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  width: 760px;
 }

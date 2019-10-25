@@ -1,44 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-      <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-      <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/3.1.0/jquery-ui.min.js"></script>
-      <meta charset=utf-8 />
-      <meta charset="ISO-8859-1">
-      <title>Deep Gesture Lingua</title>
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
-      <link rel="shortcut icon" href="#" type="image/x-icon">
-       <script type="text/javascript" src="{{ url_for('static', filename = 'home.js')}}"></script>
-  </head>
-  <body>
-    <div class="transbox">
-      <h1 style="font-size:60px" >Deep Gesture Lingua</h1>
-    </div>
-    <form id="image-input" action="/predict" method="post" enctype="multipart/form-data">
-      <input type="file" id="file" name='file' style = "margin-left:280px; align:center;" onchange="readURL(this)"/>
-      <label for="file">Choose an Image</label>
 
-      <button type=""class="button" style = "margin-left:80px;align:center; ">Click an Image</button>
-      <input type="submit" id="submit" name = "submit_button" value="Capture Video" style = "margin-left:120px;align:center; "/>
-  <!-- </form> -->
+<head>
+  <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/3.1.0/jquery-ui.min.js"></script>
+  <meta charset=utf-8 />
+  <meta charset="ISO-8859-1">
+  <title>Deep Gesture Lingua</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+  <script type="text/javascript" src="{{ url_for('static', filename = 'home.js')}}"></script>
+</head>
+
+<body>
+  <div class="transbox">
+    <h1 style="font-size:60px">Deep Gesture Lingua</h1>
+  </div>
+  <form id="image-input" action="/predict" method="post" enctype="multipart/form-data">
+    <input type="file" id="file" name='file' style="margin-left:280px; align:center;" onchange="readURL(this)" />
+    <label for="file">Choose an Image</label>
+
+    <button type="" class="button" style="margin-left:80px;align:center; ">Click an Image</button>
+    <input type="submit" id="submit" name="submit_button" value="Capture Video" style="margin-left:120px;align:center; " />
+    <!-- </form> -->
     <br>
     <br>
     <div class="boxed">
-    <img id="gesture" width=300 height= 300 src="#" alt="Your hand Gesture Image" />
-    <!-- <input type="submit" id="submit" value="Predict the Alphabet" style="margin-left:20px;margin-top:90px"> -->
+      <img id="gesture" width=300 height=300 src="#" alt="Your hand Gesture Image" />
+      <!-- <input type="submit" id="submit" value="Predict the Alphabet" style="margin-left:20px;margin-top:90px"> -->
     </div>
     <br>
     <br>
     <!-- <form id="image-input" action="/predict" method="post" enctype="multipart/form-data"> -->
-    <input type="submit" id="submit" name = "submit_button" value="Predict the Alphabet" style="margin-left:550px;margin-top:200px">
-    </form>
+    <input type="submit" id="submit" name="submit_button" value="Predict the Alphabet" style="margin-left:550px;margin-top:200px">
+  </form>
 
 
-<div class="boxed2">
+  <div class="boxed2">
     View Gesture Prediction here:<br>
     <p id="result">{{name}}</br></p>
-</div>
+  </div>
   <!-- <script>
   $(document).ready(function() {
     $('#submit').Click(function(){
@@ -52,5 +54,6 @@
     });
   });
   </script> -->
-  </body>
+</body>
+
 </html>
