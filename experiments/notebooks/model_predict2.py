@@ -7,8 +7,15 @@ import torch
 import cv2
 from binascii import a2b_base64
 from io import BytesIO
-#from fastai.vision import ImageDataBunch, get_transforms, cnn_learner, normalize, imagenet_stats, open_image, models
-from fastai.vision import *
+from fastai.vision import (
+    ImageDataBunch,
+    get_transforms,
+    cnn_learner,
+    imagenet_stats,
+    open_image,
+    models,
+)
+# from fastai.vision import *
 import numpy as np
 np.random.seed(5)
 app = Flask(__name__)
@@ -63,7 +70,7 @@ def predict():
         return render_template("linguavideo2.html")
         # # return render_template("success.html")
 
-    @app.route('/video', methods=["GET", "POST"])
+    @app.route('/face', methods=["GET", "POST"])
     def face():
         binary_data = a2b_base64(request.files['imgBase64'])
         img = open_image(BytesIO(binary_data))

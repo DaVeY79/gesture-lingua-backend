@@ -15,7 +15,7 @@ with open(path / "class_names.pkl", "rb") as pkl_file:
 data2 = ImageDataBunch.single_from_classes(
     path, classes, ds_tfms=get_transforms(), size=224).normalize(imagenet_stats)
 learn = cnn_learner(data2, models.resnet34)
-learn.load('stage-1')
+learn.load('model-after-unfreeze')
 
 cap = cv2.VideoCapture(0)
 

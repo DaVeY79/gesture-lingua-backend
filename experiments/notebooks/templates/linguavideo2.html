@@ -17,7 +17,7 @@
     <h1 style="font-size:60px">Deep Gesture Lingua</h1>
   </div>
 </body>
-<form id="image-input" action="/video" method="post" enctype="multipart/form-data">
+<form id="image-input" action="/face" method="post" enctype="multipart/form-data">
 <div class="camera">
   <video id="video">Video stream not available.</video>
   <button id="startbutton">Take photo</button>
@@ -107,10 +107,10 @@
       context.fillStyle = "#AAA";
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      var dataURL = canvas.toDataURL('image/jpeg');
+      var dataURL = canvas.toDataURL('image/jpg');
       jQuery.ajax({
                         type: "POST",
-                        url: "/video",
+                        url: "/face",
                         data: {
                             imgBase64: dataURL.split(',')[1]
                         }
@@ -131,7 +131,7 @@
         canvas.height = height;
         context.drawImage(video, 0, 0, width, height);
 
-        var data = canvas.toDataURL('image/jpeg');
+        var data = canvas.toDataURL('image/jpg');
         photo.setAttribute('src', data);
       } else {
         clearphoto();
