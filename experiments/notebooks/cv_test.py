@@ -1,11 +1,9 @@
-# from fastai import cnn_learner
-# from fastai.vision import cnn_learner, open_image, ImageDataBunch
 from fastai.vision import *
-
 import cv2
 import torch
 import pickle
 from pathlib import Path
+
 path = Path("/Users/davidabraham/gesture-lingua-backend/experiments/notebooks")
 
 with open(path / "class_names.pkl", "rb") as pkl_file:

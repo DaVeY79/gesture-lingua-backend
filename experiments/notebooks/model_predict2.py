@@ -68,14 +68,6 @@ def predict():
 
     elif request.form["submit_button"] == "Capture Video":
         return render_template("linguavideo2.html")
-        # # return render_template("success.html")
-
-    @app.route('/face', methods=["GET", "POST"])
-    def face():
-        binary_data = a2b_base64(request.files['imgBase64'])
-        img = open_image(BytesIO(binary_data))
-        label, index, pred = learn.predict(img)
-        # analysis = { "predictions": label}
-        logger.info(label)
+        #return render_template("success.html")
 
 app.run(port=5000)
