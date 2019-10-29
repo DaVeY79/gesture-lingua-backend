@@ -10,128 +10,24 @@
   <title>Deep Gesture Lingua</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
   <link rel="shortcut icon" href="#" type="image/x-icon">
-  <!-- <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script> -->
 </head>
 
 <body>
   <div class="transbox">
     <h1 style="font-size:60px">Deep Gesture Lingua</h1>
   </div>
-
-
-  <!-- <div class="boxed3">
-      <video autoplay="true" id="videoElement">
-
-      </video>
-    </div> -->
-
-  <!-- beginning of nonsense -->
-
-  <!-- <div class="mb10">
-    <button onclick="toggleVideo()" id="trackbutton" class="bx--btn bx--btn--secondary" type="button">
-      Toggle Video
-    </button>
-    <div id="updatenote" class="updatenote mt10"> loading model ..</div>
+  <form id="image-input" action="/video" method="post">
+    <input type="submit" class="home-button" id="submit" name="submit_button" value="Return to home page" style="margin-left:20px;align:center; " />
+    <input type="submit" class="home-button" id="submit" name="submit_button" value="Close video" style="margin-left:800px;align:center; " />
+  </form>
+  <div class="boxed3">
+    <img src="{{ url_for('video_feed') }}" height="600" width="900">
   </div>
-  <video class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
-
-  <canvas id="canvas" class="border canvasbox"></canvas>
-
-  <script src="https://unpkg.com/carbon-components@latest/scripts/carbon-components.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script>
   <script>
-    const video = document.getElementById("myvideo");
-    const canvas = document.getElementById("canvas");
-    const context = canvas.getContext("2d");
-    let trackButton = document.getElementById("trackbutton");
-    let updateNote = document.getElementById("updatenote");
-
-    let isVideo = false;
-    let model = null;
-
-    const modelParams = {
-      flipHorizontal: true, // flip e.g for video
-      maxNumBoxes: 20, // maximum number of boxes to detect
-      iouThreshold: 0.5, // ioU threshold for non-max suppression
-      scoreThreshold: 0.6, // confidence threshold for predictions.
-    }
-
-    function startVideo() {
-      handTrack.startVideo(video).then(function(status) {
-        console.log("video started", status);
-        if (status) {
-          updateNote.innerText = "Video started. Now tracking"
-          isVideo = true
-          runDetection()
-        } else {
-          updateNote.innerText = "Please enable video"
-        }
-      });
-    }
-
-    function toggleVideo() {
-      if (!isVideo) {
-        updateNote.innerText = "Starting video"
-        startVideo();
-      } else {
-        updateNote.innerText = "Stopping video"
-        handTrack.stopVideo(video)
-        isVideo = false;
-        updateNote.innerText = "Video stopped"
-      }
-    }
-
-
-
-    function runDetection() {
-      model.detect(video).then(predictions => {
-        console.log("Predictions: ", predictions);
-        model.renderPredictions(predictions, canvas, context, video);
-        if (isVideo) {
-          requestAnimationFrame(runDetection);
-        }
-      });
-    }
-
-    // Load the model.
-    handTrack.load(modelParams).then(lmodel => {
-      // detect objects in the image.
-      model = lmodel
-      updateNote.innerText = "Loaded Model!"
-      trackButton.disabled = false
-    });
-  </script> -->
-
-  <!-- end of nonsense -->
-
-  <script>
-    var video = document.querySelector("#myvideo");
-
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({
-          video: true
-        })
-        .then(function(stream) {
-          video.srcObject = stream;
-        })
-        .catch(function(err0r) {
-          console.log("Something went wrong!");
-        });
-    }
-
-    function stop(e) {
-      var stream = video.srcObject;
-      var tracks = stream.getTracks();
-
-      for (var i = 0; i < tracks.length; i++) {
-        var track = tracks[i];
-        track.stop();
-      }
-
-      video.srcObject = null;
-    }
+  {% if cam_flag %}
+      open(location, '_self').close();
+  {% endif %}
   </script>
-
 </body>
 
 </html>

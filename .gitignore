@@ -8,6 +8,7 @@ __pycache__/
 
 #Image files
 *.jpg
+*.png
 *.h5
 *.pth
 

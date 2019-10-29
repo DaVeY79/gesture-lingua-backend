@@ -38,7 +38,7 @@ while True:
     img = cv2.flip(img, 1)
 
     if ret:
-        x1, y1, x2, y2 = 100, 100, 700, 700
+        x1, y1, x2, y2 = 600, 50, 1200, 650
         img_cropped = img[y1:y2, x1:x2]
 
         c += 1
@@ -75,12 +75,15 @@ while True:
         mem = res
         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
         cv2.imshow("img", img)
-        img_sequence = np.zeros((200, 1200, 3), np.uint8)
-        cv2.putText(img_sequence, '%s' % (sequence.upper()),
-                    (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv2.imshow('sequence', img_sequence)
+        # img_sequence = np.zeros((200, 1200, 3), np.uint8)
+        # img_sequence = np.zeros((200, 1280, 3), np.uint8)
+        # cv2.putText(img_sequence, '%s' % (sequence.upper()),
+        #             (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        # cv2.imshow('sequence', img_sequence)
+        # img = np.vstack((img,img_sequence))
+        # cv2.imshow("img", img)
 
-        if a == 27:  # when `esc` is pressed
+        if (cv2.getWindowProperty('img', 0) == -1) or (a == 27):  # when `esc` is pressed
             break
 
 # Following line should... <-- This should work fine now
