@@ -23,18 +23,24 @@
   <div class="boxed3">
     <img src="{{ url_for('video_feed') }}" height="600" width="900">
   </div>
-  <script type = "text/javascript">
-  {% if cam_flag %}
-      open(location, '_self').close();
-  {% endif %}
-  window.addEventListener("beforeunload", function (e) {
-     $.ajax({
-         type: "POST",
-         url: "/release",
-         async: false
-     });
-     return;
-   });
+  <script type="text/javascript">
+    { %
+      if cam_flag %
+    }
+    open(location, '_self').close(); { % endif %
+    }
+    window.addEventListener("onpopstate", function(event) {
+      if (!event) {
+        window.addEventListener("beforeunload", function(e) {
+          $.ajax({
+            type: "POST",
+            url: "/release",
+            async: false
+          });
+          return;
+        });
+      }
+    });
   </script>
 </body>
 
