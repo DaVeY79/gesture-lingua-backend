@@ -28,14 +28,14 @@
     <br>
     <div class="boxed">
 
-      <img id="gesture" width=300 height=300 src="{{ image }}" alt="Your hand Gesture Image" />
+      <img id="gesture" width=300 height=300 src="#" alt="Your hand Gesture Image" />
 
       <!-- <input type="submit" id="submit" value="Predict the Alphabet" style="margin-left:20px;margin-top:90px"> -->
     </div>
     <br>
     <br>
     <!-- <form id="image-input" action="/predict" method="post" enctype="multipart/form-data"> -->
-    <input type="submit" id="submit" name="submit_button" value="Predict the Alphabet" style="margin-left:550px;margin-top:200px;" />
+    <input type="submit" id="button" name="submit_button" value="Predict the Alphabet" style="margin-left:550px;margin-top:200px;" />
   </form>
 
 
@@ -43,19 +43,30 @@
     View Gesture Prediction here:<br>
     <p id="result">{{name}}</br></p>
   </div>
-  <!-- <script>
-  $(document).ready(function() {
-    $('#submit').Click(function(){
-      $ajax({
-        url: "/predict",
-        type: "post",
-        success: function(response) {
-          $("#letterResult").html(response.html);
-        },
-      });
-    });
-  });
-  </script> -->
+  <script>
+  {% if cam_alert_flag %}
+    alert("Camera is not available or is not enabled. Please enable your camera to proceed");
+  {% endif %}
+  document.getElementById('button').onclick = function() {
+    if(document.getElementById("file").value == "") {
+   alert("Please upload an image file before proceeding");
+ }
+};
+  </script>
+<!--
+  // <script>
+  // $(document).ready(function() {
+  //   $('#submit').Click(function(){
+  //     $ajax({
+  //       url: "/predict",
+  //       type: "post",
+  //       success: function(response) {
+  //         $("#letterResult").html(response.html);
+  //       },
+  //     });
+  //   });
+  // });
+  // </script> -->
 </body>
 
 </html>

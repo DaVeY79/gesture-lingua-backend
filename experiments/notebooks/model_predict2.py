@@ -19,8 +19,6 @@ from fastai.vision import (
     models,
 )
 from flask import Flask, Response, jsonify, request, render_template, redirect, url_for
-# from flask_socketio import SocketIO
-# from flask import session
 
 app = Flask(__name__)
 
@@ -38,38 +36,34 @@ learn.load('model-after-unfreeze')
 outputFrame = None
 lock = threading.Lock()
 cap = cv2.VideoCapture()
-frameCount = 32
-last_access = 0
+frameCount = None
 cam_flag = False
-image = False
+cam_alert_flag = False
+torch.set_printoptions(precision=2)
 
 @app.route("/", methods=["GET"])
 def upload_page():
     cap.release()
-    return render_template("linguahome.html", image = image)
-
+    return render_template("linguahome.html")
 
 @app.route("/video", methods=["GET","POST"])
 def video():
+    global cap
     if request.method == "GET":
             # return the rendered template for video
-        return render_template("linguavideo.html")
+        return render_template("linguavideo.html",cam_flag = False)
     else:
         if request.form["submit_button"] == "Return to home page":
-            cap.release()
-            return render_template("linguahome.html")
+            return redirect(url_for("upload_page"))
         elif request.form["submit_button"] == "Close video":
             cap.release()
             return render_template("linguavideo.html",cam_flag = True)
 
-# @app.route("/release", methods=["GET"])
-# @socketio.on('disconnect')
-# def video():
-#     global cam_flag
-#     cam_flag = True
-#     cap.release()
-
-
+@app.route("/release", methods=["POST"])
+def release():
+    # global cap
+    cap.release()
+    return render_template("linguavideo.html",cam_flag = True)
 
 def recognize_gesture(frameCount):
     # grab global references to the video stream, output frame, and
@@ -81,61 +75,58 @@ def recognize_gesture(frameCount):
     mem = ''
     consecutive = 0
     sequence = ''
+    try:
+        while True:
+            ret, img = cap.read()
+            img = cv2.flip(img, 1)
+            res = ''
+            if ret:
+                # x1, y1, x2, y2 = 100, 100, 700, 700
+                x1, y1, x2, y2 = 350, 50, 600, 450
+                img_cropped = img[y1:y2, x1:x2]
 
-    while True:
-        ret, img = cap.read()
-        img = cv2.flip(img, 1)
-        res = ''
-        if ret:
-            #x1, y1, x2, y2 = 100, 100, 700, 700
-            x1, y1, x2, y2 = 350, 50, 600, 450
-            img_cropped = img[y1:y2, x1:x2]
+                cv2.imwrite('test1.jpg', img_cropped)
+                a = cv2.waitKey(1)  # waits to see if `esc` is pressed
 
-            cv2.imwrite('test1.jpg', img_cropped)
-
-            a = cv2.waitKey(1)  # waits to see if `esc` is pressed
-
-            if i == 4:
-                try:
+                if i == 4:
                     img_ = open_image(Path('./test1.jpg'))
-                except OSError:
-                    pass
-                label, index_, pred = learn.predict(img_)
-                res = str(label)
-                score = pred[0]
+                    label, index_, pred = learn.predict(img_)
+                    res = str(label)
+                    score = pred[0]
 
-                i = 0
-                if mem == res:
-                    consecutive += 1
-                else:
-                    consecutive = 0
-                if consecutive == 2 and res not in ['nothing']:
-                    if res == 'space':
-                        sequence += ' '
-                    elif res == 'del':
-                        sequence = sequence[:-1]
+                    i = 0
+                    if mem == res:
+                        consecutive += 1
                     else:
-                        sequence += res
-                    consecutive = 0
+                        consecutive = 0
+                    if consecutive == 2 and res not in ['nothing']:
+                        if res == 'space':
+                            sequence += ' '
+                        elif res == 'del':
+                            sequence = sequence[:-1]
+                        else:
+                            sequence += res
+                            consecutive = 0
 
-            i += 1
-            cv2.putText(img, '%s' % (res.upper()), (100, 400),
-                        cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 4)
-            cv2.putText(img, '(score = {})'.format(round(float(score), 2)),
-                        (100, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
-            mem = res
-            cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            # img_sequence = np.zeros((200, 1280, 3), np.uint8)
-            # cv2.putText(img_sequence, '%s' % (sequence.upper()),
-            #             (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            # resize_img_sequence = cv2.resize(img_sequence,(img_sequence.shape[0],img.shape[1]))
-            # img = np.vstack((img,img_sequence))
+                i += 1
+                cv2.putText(img, '%s' % (res.upper()), (100, 400),
+                            cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 4)
+                cv2.putText(img, '(score = {})'.format(score),
+                            (100, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255))
+                mem = res
+                cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
+                # img_sequence = np.zeros((200, 1280, 3), np.uint8)
+                # cv2.putText(img_sequence, '%s' % (sequence.upper()),
+                #             (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-        try:
-            with lock:
-                outputFrame = img.copy()
-        except:
-            cam_flag = True
+                with lock:
+                    outputFrame = img.copy()
+
+    except:
+        cam_flag = True
+
+    finally:
+        pass
 
 
 def generate():
@@ -158,8 +149,7 @@ def generate():
             if not flag:
                 continue
 
-        # if (time.time() - last_access > 10) and cam_flag:
-        #     cap.release()
+        # if cam_flag:
         #     break
 
         # yield the output frame in the byte format
@@ -178,41 +168,37 @@ def video_feed():
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.form["submit_button"] == "Predict the Alphabet":
-        image_path = join('uploaded_images', 'image.jpeg')
-        file = request.files['file']
-        file.save(str(path / image_path))
-        img = open_image(path / image_path)
-        label, index, pred = learn.predict(img)
-        full_filename = join(os.getcwd(),image_path)
-        return render_template("linguahome.html", name=label,image=full_filename)
-
-    elif request.form["submit_button"] == "Capture Video":
-        # start a thread that will perform motion detection
-        global cap, last_access
-        cap = cv2.VideoCapture(0)
-        last_access = time.time()
-        time.sleep(2.0)
-        t = threading.Thread(target=recognize_gesture, args=(frameCount,))
-        t.daemon = True
-        t.start()
-        return redirect(url_for('video'))
-
+        try:
+            image_path = join('uploaded_images', 'image.jpg')
+            file = request.files['file']
+            file.save(str(path / image_path))
+            img = open_image(path / image_path)
+            label, index, pred = learn.predict(img)
+        except:
+            return redirect(url_for('upload_page'))
+        else:
+            return render_template("linguahome.html", name=label)
     elif request.form["submit_button"] == "Click an Image":
         return render_template("linguacamera.html")
 
-@app.route('/snapshot', methods=['POST'])
-def snapshot():
-    if request.form["submit_button"] == "Predict the Alphabet":
-        # image_path = join('uploaded_images', 'snap.jpeg')
-        # file = request.get("snap")
-        # file.save(str(path / image_path))
-        binary_data = a2b_base64(request.form['snap'])
-        img = open_image(BytesIO(binary_data))
-        # img = open_image(path / image_path)
-        label, index, pred = learn.predict(img)
-        return render_template("linguacamera.html", name=label)
 
-
+    elif request.form["submit_button"] == "Capture Video":
+        # start a thread that will perform motion detection
+        global cap,cam_alert_flag
+        try:
+            cap = cv2.VideoCapture(0)
+            if cap is None or not cap.isOpened():
+                raise Exception("Camera not available")
+        except cv2.error as e:
+            return render_template("linguahome.html", cam_alert_flag = True)
+        except Exception as e:
+            return render_template("linguahome.html", cam_alert_flag = True)
+        else:
+            time.sleep(2.0)
+            t = threading.Thread(target=recognize_gesture, args=(frameCount,))
+            t.daemon = True
+            t.start()
+            return redirect(url_for('video'))
 
 app.run(port=5000)
 # if __name__ == '__main__':
@@ -226,7 +212,6 @@ app.run(port=5000)
 #                     help="# of frames used to construct the background model")
 #     args = vars(ap.parse_args())
 #     frameCount = args["frame_count"]
-#     # app.run(port=5000)
 #     app.run(host=args["ip"], port=args["port"], debug=True,
 #             threaded=True, use_reloader=False)
 #     cap.release()

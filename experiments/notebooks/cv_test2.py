@@ -75,13 +75,12 @@ while True:
         mem = res
         cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
         cv2.imshow("img", img)
-        # img_sequence = np.zeros((200, 1200, 3), np.uint8)
-        # img_sequence = np.zeros((200, 1280, 3), np.uint8)
-        # cv2.putText(img_sequence, '%s' % (sequence.upper()),
-        #             (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        # cv2.imshow('sequence', img_sequence)
+        img_sequence = np.zeros((200, 1200, 3), np.uint8)
+        cv2.putText(img_sequence, '%s' % (sequence.upper()),
+                    (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.imshow('sequence', img_sequence)
+        # resize_img_sequence = cv2.resize(img_sequence,(img_sequence.shape[0],img.shape[1]))
         # img = np.vstack((img,img_sequence))
-        # cv2.imshow("img", img)
 
         if (cv2.getWindowProperty('img', 0) == -1) or (a == 27):  # when `esc` is pressed
             break
