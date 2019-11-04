@@ -5,7 +5,10 @@ import time
 import pickle
 import torch
 import cv2
+import os
 from os.path import join
+from binascii import a2b_base64
+from io import BytesIO
 from pathlib import Path
 from fastai.vision import (
     ImageDataBunch,
@@ -21,7 +24,9 @@ from flask import Flask, Response, jsonify, request, render_template, redirect, 
 
 app = Flask(__name__)
 
-path = Path("/Users/davidabraham/gesture-lingua-backend/experiments/notebooks")
+#path = Path("/Users/davidabraham/gesture-lingua-backend/experiments/notebooks")
+path = Path(r"C:\Users\Shivalika\gesture-lingua-backend\experiments\notebooks")
+
 with open(path / "class_names.pkl", "rb") as pkl_file:
     classes = pickle.load(pkl_file)
 
@@ -33,14 +38,15 @@ learn.load('model-after-unfreeze')
 outputFrame = None
 lock = threading.Lock()
 cap = cv2.VideoCapture()
-frameCount = None
+frameCount = 32
 last_access = 0
 cam_flag = False
+image = False
 
 @app.route("/", methods=["GET"])
 def upload_page():
     cap.release()
-    return render_template("linguahome.html")
+    return render_template("linguahome.html", image = image)
 
 
 @app.route("/video", methods=["GET","POST"])
@@ -81,8 +87,8 @@ def recognize_gesture(frameCount):
         img = cv2.flip(img, 1)
         res = ''
         if ret:
-            # x1, y1, x2, y2 = 100, 100, 700, 700
-            x1, y1, x2, y2 = 600, 50, 1200, 650
+            #x1, y1, x2, y2 = 100, 100, 700, 700
+            x1, y1, x2, y2 = 350, 50, 600, 450
             img_cropped = img[y1:y2, x1:x2]
 
             cv2.imwrite('test1.jpg', img_cropped)
@@ -172,12 +178,13 @@ def video_feed():
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.form["submit_button"] == "Predict the Alphabet":
-        image_path = join('uploaded_images', 'image.jpg')
+        image_path = join('uploaded_images', 'image.jpeg')
         file = request.files['file']
         file.save(str(path / image_path))
         img = open_image(path / image_path)
         label, index, pred = learn.predict(img)
-        return render_template("linguahome.html", name=label)
+        full_filename = join(os.getcwd(),image_path)
+        return render_template("linguahome.html", name=label,image=full_filename)
 
     elif request.form["submit_button"] == "Capture Video":
         # start a thread that will perform motion detection
@@ -193,19 +200,33 @@ def predict():
     elif request.form["submit_button"] == "Click an Image":
         return render_template("linguacamera.html")
 
+@app.route('/snapshot', methods=['POST'])
+def snapshot():
+    if request.form["submit_button"] == "Predict the Alphabet":
+        # image_path = join('uploaded_images', 'snap.jpeg')
+        # file = request.get("snap")
+        # file.save(str(path / image_path))
+        binary_data = a2b_base64(request.form['snap'])
+        img = open_image(BytesIO(binary_data))
+        # img = open_image(path / image_path)
+        label, index, pred = learn.predict(img)
+        return render_template("linguacamera.html", name=label)
 
-if __name__ == '__main__':
-    # construct the argument parser and parse command line arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--ip", type=str, required=True,
-                    help="ip address of the device")
-    ap.add_argument("-o", "--port", type=int, required=True,
-                    help="ephemeral port number of the server (1024 to 65535)")
-    ap.add_argument("-f", "--frame-count", type=int, default=32,
-                    help="# of frames used to construct the background model")
-    args = vars(ap.parse_args())
-    frameCount = args["frame_count"]
-    # app.run(port=5000)
-    app.run(host=args["ip"], port=args["port"], debug=True,
-            threaded=True, use_reloader=False)
-    cap.release()
+
+
+app.run(port=5000)
+# if __name__ == '__main__':
+#     # construct the argument parser and parse command line arguments
+#     ap = argparse.ArgumentParser()
+#     ap.add_argument("-i", "--ip", type=str, required=True,
+#                     help="ip address of the device")
+#     ap.add_argument("-o", "--port", type=int, required=True,
+#                     help="ephemeral port number of the server (1024 to 65535)")
+#     ap.add_argument("-f", "--frame-count", type=int, default=32,
+#                     help="# of frames used to construct the background model")
+#     args = vars(ap.parse_args())
+#     frameCount = args["frame_count"]
+#     # app.run(port=5000)
+#     app.run(host=args["ip"], port=args["port"], debug=True,
+#             threaded=True, use_reloader=False)
+#     cap.release()

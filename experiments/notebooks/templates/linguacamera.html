@@ -9,7 +9,6 @@
   <meta charset="ISO-8859-1">
   <title>Deep Gesture Lingua</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
-  <link rel="shortcut icon" href="#" type="image/x-icon">
   <!-- <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script> -->
 </head>
 
@@ -22,9 +21,17 @@
 <video id="video" width="320" height="240">Video stream not available.</video>
     <button id="startbutton">Take photo</button>
   </div>
+
   <canvas id="canvas" width="320" height="240"> </canvas>
-  <div class="output">
-    <img id="photo" alt="The screen capture will appear in this box.">
+  <form id="image-input" action="/snapshot" method="post" enctype="multipart/form-data">
+    <div class="output">
+    <img id="photo" name = "photo" width=300 height=300 alt="The screen capture will appear in this box.">
+    <input type="submit" id="submit" name="submit_button" value="Predict the Alphabet" style="margin-left:550px;margin-top:200px;" />
+  </div>
+  </form>
+  <div class="boxed2">
+    View Gesture Prediction here:<br>
+    <p id="result">{{name}}</br></p>
   </div>
 
   <script>
@@ -102,7 +109,7 @@
         context.fillStyle = "#AAA";
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        var data = canvas.toDataURL('image/png');
+        var data = canvas.toDataURL('image/jpeg');
         photo.setAttribute('src', data);
       }
 
@@ -119,13 +126,19 @@
           canvas.height = height;
           context.drawImage(video, 0, 0, width, height);
 
-          var data = canvas.toDataURL('image/png');
+          var data = canvas.toDataURL('image/jpeg');
+          jQuery.ajax({
+            type: "POST",
+            url : "/snapshot",
+            data: {
+              snap: data.split(',')[1]
+            }
+          });
           photo.setAttribute('src', data);
         } else {
           clearphoto();
         }
       }
-
       // Set up our event listener to run the startup process
       // once loading is complete.
       window.addEventListener('load', startup, false);
