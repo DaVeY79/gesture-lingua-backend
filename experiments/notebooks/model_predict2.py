@@ -77,8 +77,7 @@ def recognize_gesture(frameCount):
             img = cv2.flip(img, 1)
             res = ''
             if ret:
-                # x1, y1, x2, y2 = 100, 100, 700, 700
-                x1, y1, x2, y2 = 350, 50, 600, 450
+                x1, y1, x2, y2 = 600, 50, 1200, 650
                 img_cropped = img[y1:y2, x1:x2]
 
                 cv2.imwrite('test1.jpg', img_cropped)
