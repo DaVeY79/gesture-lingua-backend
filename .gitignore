@@ -7,6 +7,8 @@ __pycache__/
 *.so
 
 #Image files
+*.jpg
+*.png
 *.h5
 *.pth
 
@@ -111,7 +113,6 @@ venv.bak/
 datasets
 test_images
 uploaded_images
-linguavideo2.html
 
 # mypy
 .mypy_cache/
