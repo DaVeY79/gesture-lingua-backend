@@ -1,8 +1,9 @@
 body {
-  background-color: #fffff9;
+  background-image:url("jo-hilton-unsplash.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+
 }
 
 .header {

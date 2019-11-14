@@ -9,13 +9,12 @@
   <meta charset="ISO-8859-1">
   <title>Deep Gesture Lingua</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homestyle.css')}}">
-  <link rel="shortcut icon" href="#" type="image/x-icon">
   <script type="text/javascript" src="{{ url_for('static', filename = 'home.js')}}"></script>
 </head>
 
 <body>
   <div class="transbox">
-    <h1 style="font-size:60px">Deep Gesture Lingua</h1>
+    <h1 style="font-size:60px"><img src="/static/ASL_IconNew.png" height="100" width="150" style="margin-left: 100px;"/>Deep Gesture Lingua</h1>
   </div>
   <form id="image-input" action="/predict" method="post" enctype="multipart/form-data">
     <input type="file" id="file" name='file' style="margin-left:280px; align:center;" onchange="readURL(this)" />
@@ -28,7 +27,9 @@
     <br>
     <br>
     <div class="boxed">
+
       <img id="gesture" width=300 height=300 src="#" alt="Your hand Gesture Image" />
+
       <!-- <input type="submit" id="submit" value="Predict the Alphabet" style="margin-left:20px;margin-top:90px"> -->
     </div>
     <br>

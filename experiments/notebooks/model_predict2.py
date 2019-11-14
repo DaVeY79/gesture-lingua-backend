@@ -20,6 +20,7 @@ from flask import Flask, Response, jsonify, request, render_template, redirect, 
 app = Flask(__name__)
 
 path = Path("/Users/davidabraham/gesture-lingua-backend/experiments/notebooks")
+
 with open(path / "class_names.pkl", "rb") as pkl_file:
     classes = pickle.load(pkl_file)
 
@@ -77,18 +78,18 @@ def recognize_gesture(frameCount):
             res = ''
             if ret:
                 # x1, y1, x2, y2 = 100, 100, 700, 700
-                x1, y1, x2, y2 = 600, 50, 1200, 650
+                x1, y1, x2, y2 = 350, 50, 600, 450
                 img_cropped = img[y1:y2, x1:x2]
 
                 cv2.imwrite('test1.jpg', img_cropped)
-
                 a = cv2.waitKey(1)  # waits to see if `esc` is pressed
 
                 if i == 4:
                     img_ = open_image(Path('./test1.jpg'))
                     label, index_, pred = learn.predict(img_)
                     res = str(label)
-                    score = pred[0]
+                    # score = pred[0]
+                    score = torch.max(pred).item()
 
                     i = 0
                     if mem == res:
@@ -145,9 +146,6 @@ def generate():
             if not flag:
                 continue
 
-        # if cam_flag:
-        #     break
-
         # yield the output frame in the byte format
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
               bytearray(encodedImage) + b'\r\n')
@@ -174,9 +172,9 @@ def predict():
             return redirect(url_for('upload_page'))
         else:
             return render_template("linguahome.html", name=label)
-
     elif request.form["submit_button"] == "Click an Image":
         return render_template("linguacamera.html")
+
 
     elif request.form["submit_button"] == "Capture Video":
         # start a thread that will perform motion detection
@@ -195,7 +193,6 @@ def predict():
             t.daemon = True
             t.start()
             return redirect(url_for('video'))
-
 
 if __name__ == '__main__':
     # construct the argument parser and parse command line arguments
